@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(mandelbrot)
+project(mandelbrot LANGUAGES C CXX)
 
 # Look for Raylib and Eigen
 find_package(raylib REQUIRED)
@@ -15,5 +15,5 @@ target_link_libraries(mandelbrot PRIVATE raylib Eigen3::Eigen $<$<PLATFORM_ID:Wi
 
 set_target_properties(mandelbrot PROPERTIES CXX_STANDARD 20)
 
-target_compile_options(mandelbrot PRIVATE -march=native -Werror -Wall -Wextra -Wpedantic)
+target_compile_options(mandelbrot PRIVATE $<$<CXX_COMPILER_ID:GNU>:-march=native -Werror -Wall -Wextra -Wpedantic>)
 

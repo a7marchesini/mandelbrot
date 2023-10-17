@@ -8,7 +8,8 @@ void user_input(
   double *p_zoom_speed,
   EIGEN_VECTOR *p_x_pixels_pos,
   EIGEN_VECTOR *p_y_pixels_pos,
-  int *p_iterations)
+  int *p_max_iterations,
+  int *p_calc_choice)
 {
   // Increase or decrease pan speed
   if (IsKeyPressed(KEY_T))
@@ -81,17 +82,26 @@ void user_input(
   // Targeted at middle of pixel
   p_x_pixels_pos->setLinSpaced((*p_x_axis)[0],  (*p_x_axis)[1]);
   p_x_pixels_pos->array() +=  ((*p_x_axis)[1] - (*p_x_axis)[0]) / GetScreenWidth();
-  p_y_pixels_pos->setLinSpaced((*p_y_axis)[0],  (*p_y_axis)[1]);
-  p_y_pixels_pos->array() +=  ((*p_y_axis)[1] - (*p_y_axis)[0]) / GetScreenHeight();
+  p_y_pixels_pos->setLinSpaced((*p_y_axis)[1],  (*p_y_axis)[0]);
+  p_y_pixels_pos->array() +=  ((*p_y_axis)[0] - (*p_y_axis)[1]) / GetScreenHeight();
 
   // Increase or decrease iterations
   if (IsKeyPressed(KEY_E))
   {
-    *p_iterations -= 16;
+    *p_max_iterations -= 16;
   }
   if (IsKeyPressed(KEY_R))
   {
-    *p_iterations += 16;
+    *p_max_iterations += 16;
   }
 
+  // Change calculation choice
+  if (IsKeyPressed(KEY_KP_1))
+  {
+    *p_calc_choice = 1;
+  }
+  if (IsKeyPressed(KEY_KP_2))
+  {
+    *p_calc_choice = 2;
+  }
 }
