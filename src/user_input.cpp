@@ -37,11 +37,11 @@ void user_input(
   // Pan across screen
   if (IsKeyDown(KEY_UP))
   {
-    p_y_axis->array() -= *p_pan_speed * y_range;
+    p_y_axis->array() += *p_pan_speed * y_range;
   }
   if (IsKeyDown(KEY_DOWN))
   {
-    p_y_axis->array() += *p_pan_speed * y_range;
+    p_y_axis->array() -= *p_pan_speed * y_range;
   }
   if (IsKeyDown(KEY_LEFT))
   {

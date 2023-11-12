@@ -52,7 +52,14 @@ void thread_fn(
         }
       }
       
+      if (*p_calc_choice == 1)
+      {
       calcs_scalar(*p_max_iterations, y, p_x_pixels_pos, p_y_pixels_pos, p_norms, p_iteration_counts);
+      }
+      else if (*p_calc_choice == 2)
+      {
+      calcs_simd(*p_max_iterations, y, p_x_pixels_pos, p_y_pixels_pos, p_norms, p_iteration_counts);
+      }
     }
 
     // Notify main thread

@@ -42,6 +42,8 @@ void calcs_scalar(int max_iterations, int y, EIGEN_VECTOR *p_x_pixels_pos, EIGEN
 {
   double nan = NAN;
 
+  const VALUE_TYPE threshold(sqrt(5.0));
+
   // Iterate through columns
   for (int x = 0; x < p_x_pixels_pos->size(); ++x)
   {
@@ -60,14 +62,9 @@ void calcs_scalar(int max_iterations, int y, EIGEN_VECTOR *p_x_pixels_pos, EIGEN
       value_i = VALUE_TYPE(2.0) * a * b + c_i;
       // Compare the norms against the threshold
       norm = value_r * value_r + value_i * value_i;
-      const VALUE_TYPE norm_lt_threshold = norm < VALUE_TYPE(double(1<<16));
+      const VALUE_TYPE norm_lt_threshold = norm < threshold;
       // Mask out the data above the threshold and increase the thresholds
       iteration_count += norm_lt_threshold;
-    }
-    // Fix inf and nan
-    if (isnan(norm) || isinf(norm))
-    {
-      norm = FLT_MAX;
     }
     // Populate data containers
     (*p_norms)(y, x) = norm;

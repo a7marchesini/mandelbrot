@@ -120,10 +120,6 @@ int main() {
   // Initialize once
   reinit(&colors, &image, &texture, &x_pixels_pos, &y_pixels_pos, &norms, &iteration_counts);
 
-  
-    Eigen::VectorXi hist(max_iterations + 1);
-    EIGEN_MATRIX hues(GetScreenHeight(), GetScreenWidth());
-
   while(!WindowShouldClose())
   {
     // Handle user input
@@ -151,15 +147,6 @@ int main() {
       semaphore_thread_to_main.acquire();
     }
 
-    // Try histogram method
-    //Eigen::VectorXi hist(iterations + 1);
-    //EIGEN_MATRIX hues(GetScreenHeight(), GetScreenWidth());
-    hist.setZero();
-    for (int iteration_count : iteration_counts.reshaped())
-    {
-      ++hist[iteration_count];
-    }
-
     // For each pixel, load the appropriate color
     for (int y = 0; y < colors.rows(); ++y)
     {
@@ -174,10 +161,8 @@ int main() {
         }
         else
         {
-          //  int iteration = iteration_counts(y, x);
-          //  colors(y, x) = iteration_colors[iteration % MAX_ITERATION_COLORS];
-          //  //double nsmooth = (iteration + 1 - std::log(std::log(norm)) / std::log(2.0)) / iterations * MAX_ITERATION_COLORS;
-          //  //colors(y, x) = iteration_colors[size_t(nsmooth)];
+          int iteration = iteration_counts(y, x);
+          colors(y, x) = iteration_colors[iteration % MAX_ITERATION_COLORS];
 
           // Try histogram method
           //hues(y, x) = hist(Eigen::seq(0, iteration + 1)).sum() * 1.0 / (GetScreenHeight() * GetScreenWidth());
@@ -186,19 +171,19 @@ int main() {
           ////std::cout << hue << std::endl;
           //colors(y, x) = iteration_colors[int(hue * MAX_ITERATION_COLORS)];
 
-          // Try smooth coloring
-          double log_zn = std::log(norm) / 2;
-          double nu = std::log2(log_zn / std::log(2));
-          iteration = std::max(iteration + 1 - nu, 0.0);
+          //// Try smooth coloring
+          //double log_zn = std::log(norm) / 2;
+          //double nu = std::log2(log_zn / std::log(2));
+          //iteration = std::max(iteration + 1 - nu, 0.0);
 
-          // Interpolate?
-          Color color1 = iteration_colors[int(iteration)];
-          Color color2 = iteration_colors[int(iteration) + 1];
-          double fraction = std::fmod(iteration, 1.0);
-          Color interpolated_color = Color{ uint8_t(color1.r + (color2.r - color1.r) * fraction),
-          uint8_t(color1.g + (color2.g - color1.g) * fraction),
-          uint8_t(color1.b + (color2.b - color1.b) * fraction), 255};
-          colors(y, x) = interpolated_color;
+          //// Interpolate?
+          //Color color1 = iteration_colors[int(iteration)];
+          //Color color2 = iteration_colors[int(iteration) + 1];
+          //double fraction = std::fmod(iteration, 1.0);
+          //Color interpolated_color = Color{ uint8_t(color1.r + (color2.r - color1.r) * fraction),
+          //uint8_t(color1.g + (color2.g - color1.g) * fraction),
+          //uint8_t(color1.b + (color2.b - color1.b) * fraction), 255};
+          //colors(y, x) = interpolated_color;
         }
       }
     }
@@ -209,9 +194,29 @@ int main() {
 
     DrawFPS(10, 10);
 
-    char iterations_text[256];
-    snprintf(iterations_text, sizeof(iterations_text) - 1, "Iterations: %d", max_iterations);
-    DrawText(iterations_text, 10, 30, 32, WHITE);
+    // Draw text
+    char text[256];
+    snprintf(text, sizeof(text) - 1, "Iterations: %d", max_iterations);
+    DrawText(text, 10, 30, 20, WHITE);
+
+    // Draw calcs choice
+    if (calc_choice == 1)
+    {
+      snprintf(text, sizeof(text) - 1, "Calcs choice: scalar");
+    }
+    else if (calc_choice == 2)
+    {
+      snprintf(text, sizeof(text) - 1, "Calcs choice: SIMD");
+    }
+    DrawText(text, 10, 50, 20, WHITE);
+    
+    // Draw pan and zoom speed choice
+    snprintf(text, sizeof(text) - 1, "Pan speed: %.3f Zoom speed: %.3f", pan_speed, zoom_speed);
+    DrawText(text, 10, 70, 20, WHITE);
+    
+    // Draw axes limits
+    snprintf(text, sizeof(text) - 1, "Boundaries: x [%5.3G, %5.3G], y [%5.3G, %5.3G]", x_axis[0], x_axis[1], y_axis[0], y_axis[1]);
+    DrawText(text, 10, 90, 20, WHITE);
 
     EndDrawing();
   }

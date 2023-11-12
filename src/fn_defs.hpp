@@ -11,7 +11,7 @@
 #include <semaphore>
 
 void calcs_scalar(int max_iterations, int y, EIGEN_VECTOR *p_x_pixels_pos, EIGEN_VECTOR *p_y_pixels_pos, EIGEN_MATRIX *p_norms, IterationCounts *p_iteration_counts);
-CalculateIterationsData calcs_simd(int iterations, SIMD_REGISTER c_r, SIMD_REGISTER c_i);
+void calcs_simd(int max_iterations, int y, EIGEN_VECTOR *p_x_pixels_pos, EIGEN_VECTOR *p_y_pixels_pos, EIGEN_MATRIX *p_norms, IterationCounts *p_iteration_counts);
 
 void thread_fn(
   int *p_iterations,

@@ -21,9 +21,20 @@
 #define SIMD_SET_ZERO _mm256_setzero_ps
 #define SIMD_SET_ONE _mm256_set1_ps
 #define SIMD_LOAD _mm256_load_ps
+#define SIMD_STORE _mm256_store_ps
+#define SIMD_ADD _mm256_add_ps
+#define SIMD_SUB _mm256_sub_ps
+#define SIMD_MUL _mm256_mul_ps
+#define SIMD_FMADD _mm256_fmadd_ps
 #define SIMD_MIN _mm256_min_ps
 #define SIMD_MAX _mm256_max_ps
 #define SIMD_AND _mm256_and_ps
+#define SIMD_CMP _mm256_cmp_ps
+#define SIMD_VALUE_TO_INT _mm256_cvttps_epi32
+#define SIMD_INT_REGISTER __m256i
+#define SIMD_INT_SET_ONE _mm256_set1_epi32
+#define SIMD_INT_LOAD _mm256_maskstore_epi32
+#define SIMD_INT_ADD _mm256_add_epi32
 #define EIGEN_VECTOR Eigen::VectorXf
 #define EIGEN_MATRIX Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
 #else
@@ -34,9 +45,20 @@
 #define SIMD_SET_ZERO _mm256_setzero_pd
 #define SIMD_SET_ONE _mm256_set1_pd
 #define SIMD_LOAD _mm256_load_pd
+#define SIMD_STORE _mm256_store_pd
+#define SIMD_ADD _mm256_add_pd
+#define SIMD_SUB _mm256_sub_pd
+#define SIMD_MUL _mm256_mul_pd
+#define SIMD_FMADD _mm256_fmadd_pd
 #define SIMD_MIN _mm256_min_pd
 #define SIMD_MAX _mm256_max_pd
 #define SIMD_AND _mm256_and_pd
+#define SIMD_CMP _mm256_cmp_pd
+#define SIMD_VALUE_TO_INT _mm256_cvtpd_epi32
+#define SIMD_INT_REGISTER __m128i
+#define SIMD_INT_SET_ONE _mm_set1_epi32
+#define SIMD_INT_LOAD _mm_maskstore_epi32
+#define SIMD_INT_ADD _mm_add_epi32
 #define EIGEN_VECTOR Eigen::VectorXd
 #define EIGEN_MATRIX Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
 #endif
